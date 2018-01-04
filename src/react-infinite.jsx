@@ -59,6 +59,7 @@ class Infinite extends React.Component<
     // of
     containerHeight: PropTypes.number,
     useWindowAsScrollContainer: PropTypes.bool,
+    scrollContainerSelector: PropTypes.string,
 
     displayBottomUpwards: PropTypes.bool.isRequired,
 
@@ -90,6 +91,7 @@ class Infinite extends React.Component<
     handleScroll: () => {},
 
     useWindowAsScrollContainer: false,
+    scrollContainerSelector: '',
 
     onInfiniteLoad: () => {},
     loadingSpinnerDelegate: <div />,
@@ -146,17 +148,39 @@ class Infinite extends React.Component<
       }
       return loadingSpinnerHeight;
     };
+
+    let specifiedScrollContainer;
+
     if (props.useWindowAsScrollContainer) {
+      specifiedScrollContainer = window;
+    }
+
+    if (props.scrollContainerSelector) {
+      specifiedScrollContainer = document.querySelector(
+        props.scrollContainerSelector
+      );
+    }
+
+    if (specifiedScrollContainer) {
       utilities.subscribeToScrollListener = () => {
-        window.addEventListener('scroll', this.infiniteHandleScroll);
+        specifiedScrollContainer.addEventListener(
+          'scroll',
+          this.infiniteHandleScroll
+        );
       };
       utilities.unsubscribeFromScrollListener = () => {
-        window.removeEventListener('scroll', this.infiniteHandleScroll);
+        specifiedScrollContainer.removeEventListener(
+          'scroll',
+          this.infiniteHandleScroll
+        );
       };
       utilities.nodeScrollListener = () => {};
-      utilities.getScrollTop = () => window.pageYOffset;
+      utilities.getScrollTop = () => specifiedScrollContainer.pageYOffset;
       utilities.setScrollTop = top => {
-        window.scroll(window.pageXOffset, top);
+        specifiedScrollContainer.scroll(
+          specifiedScrollContainer.pageXOffset,
+          top
+        );
       };
       utilities.scrollShouldBeIgnored = () => false;
       utilities.buildScrollableStyle = () => ({});
