@@ -152,24 +152,35 @@ class Infinite extends React.Component<
     let specifiedScrollContainer;
 
     if (props.useWindowAsScrollContainer) {
-        specifiedScrollContainer = window;
+      specifiedScrollContainer = window;
     }
 
     if (props.scrollContainerSelector) {
-        specifiedScrollContainer = document.querySelector(props.scrollContainerSelector);
+      specifiedScrollContainer = document.querySelector(
+        props.scrollContainerSelector
+      );
     }
 
     if (specifiedScrollContainer) {
       utilities.subscribeToScrollListener = () => {
-        specifiedScrollContainer.addEventListener('scroll', this.infiniteHandleScroll);
+        specifiedScrollContainer.addEventListener(
+          'scroll',
+          this.infiniteHandleScroll
+        );
       };
       utilities.unsubscribeFromScrollListener = () => {
-        specifiedScrollContainer.removeEventListener('scroll', this.infiniteHandleScroll);
+        specifiedScrollContainer.removeEventListener(
+          'scroll',
+          this.infiniteHandleScroll
+        );
       };
       utilities.nodeScrollListener = () => {};
       utilities.getScrollTop = () => specifiedScrollContainer.pageYOffset;
       utilities.setScrollTop = top => {
-        specifiedScrollContainer.scroll(specifiedScrollContainer.pageXOffset, top);
+        specifiedScrollContainer.scroll(
+          specifiedScrollContainer.pageXOffset,
+          top
+        );
       };
       utilities.scrollShouldBeIgnored = () => false;
       utilities.buildScrollableStyle = () => ({});
