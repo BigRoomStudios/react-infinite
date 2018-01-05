@@ -3,7 +3,8 @@
         "es2015",
         "flow",
         "react",
-        "stage-0"
+        "stage-0",
+        "react-optimize"
     ],
     "plugins": [
         "transform-class-properties",
